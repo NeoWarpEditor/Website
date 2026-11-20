@@ -1,0 +1,608 @@
+/* ==========================================================================
+   下载页专属视觉（编辑风极简黑白 + 全页交互粒子）
+   大字号排版 / 编号分区 / 发丝线行 / hover 反白
+   导航栏样式不在此文件覆盖，保持全站一致
+   ========================================================================== */
+
+.download-page {
+    background: #000;
+    overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   全页粒子画布：浮于内容之上，不拦截事件
+   -------------------------------------------------------------------------- */
+
+.fx-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.6s ease 0.15s;
+}
+
+.fx-canvas.fx-ready {
+    opacity: 1;
+}
+
+.fx-canvas.fx-unavailable {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Hero：超大排版 + 遮罩文字入场
+   -------------------------------------------------------------------------- */
+
+.dl-hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 0 0;
+    overflow: hidden;
+}
+
+.dl-hero-inner {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 72px);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 顶部 meta 行 */
+.dl-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.dl-meta sup {
+    font-size: 0.6em;
+}
+
+/* 超大标题：纯白，无渐变 */
+.dl-title {
+    margin: clamp(36px, 6vh, 72px) 0;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
+    color: #f5f5f7;
+}
+
+.dl-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+}
+
+.dl-line-inner {
+    display: inline-block;
+    transform: translateY(115%);
+    animation: dl-line-up 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform;
+}
+
+.dl-line:first-child .dl-line-inner {
+    font-size: clamp(3.4rem, 10vw, 7.5rem);
+}
+
+.dl-line:last-child .dl-line-inner {
+    font-size: clamp(3.8rem, 11.5vw, 9rem);
+    animation-delay: 0.12s;
+}
+
+.dl-line-inner sup {
+    font-size: 0.22em;
+    font-weight: 400;
+    vertical-align: super;
+    letter-spacing: 0;
+}
+
+@keyframes dl-line-up {
+    to { transform: translateY(0); }
+}
+
+/* 底部：描述 + 按钮 */
+.dl-hero-foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.dl-sub {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 460px;
+}
+
+.dl-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 30px;
+    border-radius: 980px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.dl-btn svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.3s ease;
+}
+
+.dl-btn-solid {
+    background: #f5f5f7;
+    color: #000;
+}
+
+.dl-btn-solid:hover {
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+.dl-btn-line {
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #f5f5f7;
+}
+
+.dl-btn-line:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+.dl-btn-line:hover svg {
+    transform: translate(2px, -2px);
+}
+
+/* 滚动提示 */
+.dl-scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: clamp(40px, 7vh, 72px);
+    width: fit-content;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.3s ease;
+}
+
+.dl-scroll:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.dl-scroll-line {
+    position: relative;
+    width: 72px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+}
+
+.dl-scroll-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 24px;
+    background: #f5f5f7;
+    animation: dl-scroll-run 2s cubic-bezier(0.4, 0, 0.4, 1) infinite;
+}
+
+@keyframes dl-scroll-run {
+    0% { transform: translateX(-24px); }
+    100% { transform: translateX(72px); }
+}
+
+/* 跑马灯 */
+.dl-marquee {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+    padding: 14px 0;
+    margin-top: clamp(32px, 6vh, 64px);
+}
+
+.dl-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: dl-marquee 30s linear infinite;
+}
+
+.dl-marquee-track span {
+    white-space: nowrap;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.34);
+    padding-right: 0.6em;
+}
+
+.dl-marquee-track i {
+    font-style: normal;
+    color: #ff9f0a;
+    margin: 0 0.6em;
+}
+
+@keyframes dl-marquee {
+    to { transform: translateX(-50%); }
+}
+
+/* --------------------------------------------------------------------------
+   分区头部：编号 + 中英混排
+   -------------------------------------------------------------------------- */
+
+.dl-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(72px, 12vh, 130px) clamp(24px, 5vw, 72px) 0;
+}
+
+.dl-head {
+    margin-bottom: clamp(36px, 6vh, 56px);
+}
+
+.dl-index {
+    display: block;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.38);
+    margin-bottom: 14px;
+}
+
+.dl-head h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.dl-head h2 em {
+    font-style: normal;
+    font-size: 0.42em;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.dl-head p {
+    margin: 12px 0 0;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   平台行：发丝线 + hover 反白
+   -------------------------------------------------------------------------- */
+
+.dl-rows {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.dl-row {
+    display: grid;
+    grid-template-columns: 64px 1.35fr 1.65fr 56px;
+    align-items: center;
+    gap: clamp(18px, 3vw, 40px);
+    padding: clamp(26px, 4vh, 40px) clamp(12px, 2vw, 28px);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    color: #f5f5f7;
+    transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.35s ease;
+}
+
+.dl-row:hover {
+    background: #f5f5f7;
+    color: #0a0a0c;
+}
+
+.dl-row-index {
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.38);
+    transition: color 0.35s ease;
+}
+
+.dl-row:hover .dl-row-index {
+    color: rgba(0, 0, 0, 0.45);
+}
+
+.dl-row-main {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.dl-row-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.dl-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 4px 11px;
+    border-radius: 980px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+    opacity: 0.75;
+}
+
+.dl-row-sub {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.35s ease;
+}
+
+.dl-row:hover .dl-row-sub {
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.dl-row-note {
+    font-size: 0.76rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.36);
+    transition: color 0.35s ease;
+}
+
+.dl-row:hover .dl-row-note {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.dl-row-files {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.dl-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.dl-file-name {
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.72);
+    word-break: break-all;
+    transition: color 0.35s ease;
+}
+
+.dl-row:hover .dl-file-name {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.dl-file-tag {
+    flex: 0 0 auto;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 980px;
+    color: rgba(255, 255, 255, 0.55);
+    transition: border-color 0.35s ease, color 0.35s ease;
+}
+
+.dl-row:hover .dl-file-tag {
+    border-color: rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.dl-row-arrow {
+    justify-self: end;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, background 0.35s ease;
+}
+
+.dl-row-arrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+.dl-row:hover .dl-row-arrow {
+    transform: rotate(45deg);
+    border-color: #0a0a0c;
+    background: #0a0a0c;
+    color: #f5f5f7;
+}
+
+.dl-footnote {
+    margin: clamp(28px, 5vh, 44px) 0 0;
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.38);
+    max-width: 720px;
+}
+
+.dl-footnote a {
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(255, 255, 255, 0.3);
+    transition: color 0.3s ease;
+}
+
+.dl-footnote a:hover {
+    color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   文件格式表：发丝线列表化
+   -------------------------------------------------------------------------- */
+
+#formats {
+    padding-bottom: clamp(72px, 12vh, 130px);
+}
+
+.format-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0;
+}
+
+.format-table th,
+.format-table td {
+    text-align: left;
+    padding: 18px 12px;
+    font-size: 0.86rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.format-table th {
+    background: transparent;
+    font-family: "SF Mono", Consolas, monospace;
+    font-weight: 400;
+    font-size: 0.68rem;
+    letter-spacing: 0.26em;
+    color: rgba(255, 255, 255, 0.38);
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.format-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.format-table td:first-child {
+    font-family: "SF Mono", Consolas, monospace;
+    color: #f5f5f7;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.format-table td:nth-child(2) {
+    color: rgba(255, 255, 255, 0.72);
+    white-space: nowrap;
+}
+
+.format-table td:last-child {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   响应式
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+    .dl-row {
+        grid-template-columns: 40px 1fr 44px;
+        grid-template-areas:
+            "index main arrow"
+            "index files arrow";
+        row-gap: 18px;
+    }
+
+    .dl-row-index { grid-area: index; align-self: start; }
+    .dl-row-main { grid-area: main; }
+    .dl-row-files { grid-area: files; }
+    .dl-row-arrow { grid-area: arrow; align-self: start; }
+}
+
+@media (max-width: 640px) {
+    .dl-hero {
+        padding-top: 108px;
+    }
+
+    .dl-meta {
+        letter-spacing: 0.14em;
+        font-size: 0.64rem;
+    }
+
+    .dl-hero-foot {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dl-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dl-btn {
+        justify-content: center;
+    }
+
+    .dl-marquee-track span {
+        font-size: 0.8rem;
+        letter-spacing: 0.2em;
+    }
+
+    .format-table th:nth-child(2),
+    .format-table td:nth-child(2) { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   减少动态效果偏好
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-canvas {
+        display: none;
+    }
+
+    .dl-line-inner {
+        transform: none;
+        animation: none;
+    }
+
+    .dl-marquee-track,
+    .dl-scroll-line::after {
+        animation: none;
+    }
+}

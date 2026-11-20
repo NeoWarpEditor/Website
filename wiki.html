@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki - NeoWarp</title>
+    <meta name="description" content="NeoWarp Wiki：快速上手、界面导览、文件格式、AI 模型配置、多人协作、手机编程与扩展开发指南。">
+    <link rel="icon" type="image/png" href="assets/Logo.png">
+    <link rel="stylesheet" href="css/style.css?v=20261025b">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo"><img src="assets/Logo.png" alt="NeoWarp Logo" class="nav-logo-img"><span>NeoWarp</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="download.html">下载</a></li>
+                <li><a href="wiki.html">Wiki</a></li>
+                <li><a href="https://github.com/Shiyuan-318/NeoWarp" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="菜单" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-page-title" id="navPageTitle">Wiki</div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <h1 class="wiki-hero-title">NeoWarp Wiki</h1>
+        <p class="page-hero-sub">从安装到进阶，一份指南讲清所有功能</p>
+    </section>
+
+    <!-- 正文 -->
+    <div class="wiki-layout">
+        <!-- 侧边目录 -->
+        <aside class="wiki-toc">
+            <div class="toc-title">目录</div>
+            <a href="#get-started">快速上手</a>
+            <a href="#tour">界面导览</a>
+            <a href="#formats">文件格式</a>
+            <a href="#ai-models">AI 模型配置</a>
+            <a href="#collab">多人协作</a>
+            <a href="#mobile">手机编程</a>
+            <a href="#extensions">扩展开发</a>
+            <a href="#faq">常见问题</a>
+        </aside>
+
+        <main class="wiki-content">
+            <!-- 快速上手 -->
+            <section class="wiki-card" id="get-started" data-animate>
+                <h2>🚀 快速上手</h2>
+                <h3>安装</h3>
+                <p>前往 <a href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">GitHub Releases</a> 或<a href="download.html">下载页</a>，选择与系统匹配的安装包。Windows 提供安装版与便携版，macOS 为 Universal dmg，Linux 提供 deb / AppImage / tar.gz。</p>
+                <h3>首次启动</h3>
+                <ul>
+                    <li>应用启动后进入<strong>主页</strong>：快速操作、最近项目列表与时段问候语。</li>
+                    <li>在<strong>桌面设置</strong>中可选择浅色 / 深色 / 跟随系统主题、摄像头与麦克风、硬件加速等。</li>
+                    <li>素材库、扩展文档与打包器全部本地化，<strong>离线可用</strong>。</li>
+                </ul>
+                <h3>从源码构建</h3>
+                <pre><code>git clone --recursive https://github.com/Shiyuan-318/NeoWarp.git
+cd NeoWarp
+npm install              # 安装依赖（自动执行 patch-package 应用补丁）
+npm run fetch            # 下载素材库、打包器与扩展资源
+npm run webpack:compile  # 编译渲染进程
+npm run electron:start   # 启动编辑器
+npm run electron:build   # 打包安装程序</code></pre>
+                <div class="wiki-callout">💡 <span><strong>提示：</strong>需要 Node.js 与 npm；<code>docs/screenshots</code> 为 git 子模块，克隆时请加 <code>--recursive</code>，否则请补执行 <code>git submodule update --init</code>。</span></div>
+            </section>
+
+            <!-- 界面导览 -->
+            <section class="wiki-card" id="tour" data-animate>
+                <h2>🧭 界面导览</h2>
+                <h3>主页（Home）</h3>
+                <p>应用启动页与调度中心：NeoWarp SOLO、新建项目 / 新建扩展、打开文件、图像编辑器、发起 / 加入协作等快速操作，以及最近项目列表。可在桌面设置中自定义主页 Logo、文字与背景图。</p>
+                <h3>编辑器</h3>
+                <p>完整保留 TurboWarp 的 <strong>JS / Wasm 编译器</strong>、深色模式、Addon 插件系统与 Packager 打包器（可打包 HTML / ZIP / EXE 等）。积木圆角半径可调、代码区 / 舞台区可自定义背景图。</p>
+                <h3>AI 助手（NeoWarp AI）</h3>
+                <p>独立窗口与编辑器深度联动，44 个内置工具：读取项目结构、增删改积木脚本、管理造型 / 声音 / 变量 / 列表、安装与热加载扩展、点击绿旗运行、舞台截图、联网搜索等。支持多模态（舞台截图 + 文件附件）、思维链展示、流式输出与用量统计。</p>
+                <h3>NeoWarp SOLO</h3>
+                <p>"纯 AI"工作台，<strong>没有传统编辑器界面</strong>：直接对 <code>.sb3</code> 或 JavaScript 扩展项目下达 AI 指令，由后台隐藏编辑器提供 VM 与工具支持；独立舞台弹窗提供绿旗 / 暂停 / 停止控制、变量监视器与"询问并等待"问答框；修改结果直接保存回原文件。</p>
+                <h3>效率工具窗口</h3>
+                <ul>
+                    <li><strong>待办清单</strong>：轻量待办事项，支持到点系统通知提醒。</li>
+                    <li><strong>项目分析</strong>：积木分类占比环形图、复杂度 / 代码质量 / 健康度评估，可导出为图片。</li>
+                    <li><strong>任务管理器</strong>：系统 CPU / 内存实时曲线与每个精灵的 CPU 占用排行。</li>
+                    <li><strong>独立舞台</strong>：将舞台弹出为独立窗口（2x 缩放、输入回传），适合双屏演示与调试。</li>
+                </ul>
+                <h3>图像编辑器</h3>
+                <p>Photoshop 风格分层图像编辑器：14 种工具、栅格 / 形状 / 文字 / 调整图层、16 种混合模式、非破坏性调整与破坏性滤镜、选区与自由变换，并支持把当前图片导出为已打开项目中角色的造型或新角色。</p>
+            </section>
+
+            <!-- 文件格式 -->
+            <section class="wiki-card" id="formats" data-animate>
+                <h2>📁 文件格式</h2>
+                <table class="format-table">
+                    <thead>
+                        <tr><th>扩展名</th><th>说明</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>.np1</td><td>NeoWarp 项目（未压缩，默认保存格式）</td></tr>
+                        <tr><td>.npnp</td><td>NeoWarp 加密项目（AES-256-GCM + PBKDF2）</td></tr>
+                        <tr><td>.viewsb3</td><td>只读项目（加密，仅供查看，适合分享展示）</td></tr>
+                        <tr><td>.sb3 / .sb2 / .sb</td><td>Scratch 1–3 项目</td></tr>
+                        <tr><td>.js</td><td>NeoWarp 扩展（由扩展编辑器打开）</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:0.75rem;">在编辑器中通过 <strong>文件 → 另存为</strong> 可选择保存格式；打开加密项目时需要输入密码。</p>
+            </section>
+
+            <!-- AI 模型配置 -->
+            <section class="wiki-card" id="ai-models" data-animate>
+                <h2>🧠 AI 模型配置</h2>
+                <p>NeoWarp 支持 <strong>OpenAI / Anthropic / Ollama / 自定义</strong> API 格式，并预设 DeepSeek、智谱 GLM、Kimi、小米 MiMo、华为盘古、通义千问、SenseNova 等品牌。AI 助手 / SOLO / 扩展编辑器共享同一套模型配置，在<strong>桌面设置</strong>中统一管理。</p>
+                <div class="wiki-callout">🔒 <span><strong>隐私安全：</strong>API Key 仅保存在本地 <code>tw_config.json</code>，AI 请求经 <code>tw-ai-proxy</code> 主进程代理转发（绕过 CORS），不经过任何第三方服务器。</span></div>
+                <h3>接入自定义模型</h3>
+                <ol>
+                    <li>打开 <strong>桌面设置 → AI 模型</strong>；</li>
+                    <li>选择 API 格式（OpenAI 兼容 / Anthropic / Ollama / 自定义）；</li>
+                    <li>填入接口地址、API Key 与模型名称；</li>
+                    <li>点击<strong>测试连接</strong>，成功后即可在 AI 助手与 SOLO 中选用。</li>
+                </ol>
+            </section>
+
+            <!-- 多人协作 -->
+            <section class="wiki-card" id="collab" data-animate>
+                <h2>👥 多人协作</h2>
+                <h3>发起 / 加入</h3>
+                <p>一端作为主机开启房间（默认端口 <code>8080</code>，需设置房间密码），其他设备输入地址加入，也可<strong>自动扫描发现</strong>同一局域网内的房间。SHA-256 密码校验、心跳检测、认证超时与超大帧防护保障稳定连接。</p>
+                <h3>权限控制</h3>
+                <p>主机可为访客配置"添加扩展 / 删除扩展 / 删除精灵"等权限。</p>
+                <h3>实时同步</h3>
+                <p>任何一端的修改即时同步给所有人：代码改动实时呈现并避开拖拽 / 编辑字段时执行；监视器改动就地应用；远程更新期间的本地编辑不会被丢弃。内置 iOS 风格聊天区，协作沟通无需离开编辑器。</p>
+            </section>
+
+            <!-- 手机编程 -->
+            <section class="wiki-card" id="mobile" data-animate>
+                <h2>📱 手机编程</h2>
+                <ul>
+                    <li><strong>扫码即连</strong>：AI 助手一键生成二维码，手机扫码后在浏览器中获得与桌面完全一致的 AI 聊天界面。</li>
+                    <li><strong>桌面为唯一数据源</strong>：手机端的对话、流式输出与命令执行全部实时同步回桌面编辑器。</li>
+                    <li><strong>手机预览</strong>：通过局域网（默认端口 <code>8601</code>）将当前项目导出为独立播放器，手机扫码即可试玩运行效果。</li>
+                </ul>
+            </section>
+
+            <!-- 扩展开发 -->
+            <section class="wiki-card" id="extensions" data-animate>
+                <h2>🧩 扩展开发</h2>
+                <h3>扩展编辑器</h3>
+                <p>基于 <strong>Monaco</strong>（VS Code 同款内核）的多标签 JavaScript 编辑器，内置 NeoWarp 扩展模板。可一键"添加到项目"（注入到任意打开的编辑器窗口）或存入"我的扩展"库；右侧 AI 面板可弹出 / 停靠，帮你编写和调试 TurboWarp 扩展。</p>
+                <h3>本地扩展库</h3>
+                <p>把自定义扩展放进 <code>Expands/</code> 目录，NeoWarp 通过 <code>nw-expands://</code> 协议加载，扩展库会出现"NeoWarp"标签页（附带 Punycode 转换扩展示例）。</p>
+                <h3>AI 工具链脚本</h3>
+                <pre><code>npm run ai:schema  # 从 scratch-blocks 生成积木 opcode schema
+npm run ai:prompt  # 构建并写入 AI 系统提示词
+npm run ai:check   # 校验 schema 与系统提示词是否为最新
+npm run ai:test    # 运行 DSL 往返、数据工具与流式重试测试</code></pre>
+            </section>
+
+            <!-- FAQ -->
+            <section class="wiki-card" id="faq" data-animate>
+                <h2>❓ 常见问题</h2>
+                <details class="faq-item">
+                    <summary>NeoWarp 与 TurboWarp 是什么关系？</summary>
+                    <div class="faq-body">NeoWarp 基于 TurboWarp Desktop 二次开发，完整继承其 JS / Wasm 编译器、扩展生态、Addon 插件、Packager 与深色模式等能力，并在此之上增强了 AI 辅助创作、多人协作、工作流与视觉体验。请遵守上游的许可协议（GPL-3.0）。</div>
+                </details>
+                <details class="faq-item">
+                    <summary>离线可以使用吗？</summary>
+                    <div class="faq-body">可以。素材库（tw-library）、扩展文档、打包器与扩展画廊全部本地化内置，离线可用。仅 AI 联网搜索、更新检查等少数功能需要网络。</div>
+                </details>
+                <details class="faq-item">
+                    <summary>AI 的 API Key 安全吗？</summary>
+                    <div class="faq-body">API Key 仅保存在本地 <code>tw_config.json</code>，AI 请求经主进程 <code>tw-ai-proxy</code> 代理转发，密钥不出本机、不经过第三方服务器。</div>
+                </details>
+                <details class="faq-item">
+                    <summary>协作需要公网服务器吗？</summary>
+                    <div class="faq-body">不需要。协作由主机端直接开启房间（默认端口 8080），同一局域网内的设备可自动扫描发现；跨网段时需保证设备间网络可达。</div>
+                </details>
+                <details class="faq-item">
+                    <summary>如何加快捷键 / 修改界面？</summary>
+                    <div class="faq-body">在<strong>桌面设置</strong>中可调整主题、摄像头与麦克风、硬件加速、后台节流、绕过 CORS、拼写检查等；编辑器的积木圆角半径、代码区 / 舞台区背景图等视觉项也可在设置与 Addon 中自定义。</div>
+                </details>
+                <details class="faq-item">
+                    <summary>遇到 Bug 或想提建议？</summary>
+                    <div class="faq-body">欢迎在 <a href="https://github.com/Shiyuan-318/NeoWarp/issues" target="_blank" rel="noopener">GitHub Issues</a> 提交，或加入 QQ 交流群 <strong>517453896</strong> 与作者直接交流。</div>
+                </details>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="assets/Logo.png" alt="NeoWarp Logo">
+                <span>NeoWarp</span>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="download.html">下载</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="https://github.com/Shiyuan-318/NeoWarp" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/Shiyuan-318/NeoWarp/releases" target="_blank" rel="noopener">Releases</a>
+            </div>
+            <div class="footer-copy">
+                © <span id="footerYear">2026</span> NeoWarp · 基于 <a href="https://github.com/TurboWarp/desktop" target="_blank" rel="noopener">TurboWarp Desktop</a> 二次开发 · 以 GPL-3.0 协议开源
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/nav.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/wiki.js"></script>
+</body>
+</html>
